@@ -3,6 +3,12 @@
 - humble wrapper for the powerful openlayers map api
 - demo/docs [here](https://sombriks.github.io/vue-openlayers)
 
+# Get Started
+
+## Install
+
+npm install icecoolinux/vue-openlayers --save
+
 ## Usage
 
 ```javascript
@@ -21,3 +27,20 @@ Vue.use(VueOpenLayers);
 
 // done! now on your .vue documents you have the right to use <ol-map></ol-map> and <ol-marker></olmarker>
 ```
+
+# Components
+
+## ol-map
+
+### Attributes
+**zoom**: Set the zomm (1 to 19)  
+**center**: Set the coordinates center array in latitude and longitude.  
+
+## ol-marker
+
+### Attributes
+**coords**: The coordinates of the marker.  
+**src**: The url icon image.  
+**anchor**: An array with the position of the marker center, [0.5, 1] is default (center bottom).  
+**scale**: Size of the marker image.  
+
