@@ -91,7 +91,6 @@ module.exports = {
         this.autocenter();
     },
     zoom(val) {
-      console.log(val)
       this.olmap.getView().setZoom(val);
     },
     nodrag(val) {
