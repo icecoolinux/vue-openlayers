@@ -19,6 +19,12 @@ const ol = require("openlayers");
 			},
 			markerData: [Object, String, Number, Function],
 			src: String,
+			label: {
+				type: [String, Number],
+				default: ""
+			},
+			labelx: Number,
+			labely: Number,
 			anchor: {
 				type: Array,
 				default: _ => [0.5, 1]
@@ -48,6 +54,11 @@ const ol = require("openlayers");
 				this.$emit("newmarker");
 				// console.log()
 				// this.style.image.src = val;
+			},
+			label(val) {
+				this.style.setText(this.getTextStyle());
+				this.feature.setStyle(this.style);
+				this.$emit("newmarker");
 			}
 		},
 		mounted() {
@@ -59,30 +70,32 @@ const ol = require("openlayers");
 			if (this.src) {
 				this.style = new ol.style.Style({
 					image: new ol.style.Icon({
-						src: this.src,
-						anchor: this.anchor,
-						scale: this.scale
-					})
+							src: this.src,
+							anchor: this.anchor,
+							scale: this.scale
+						}),
+					text: this.getTextStyle()
 				});
 			}
 			else {
 				this.style = new ol.style.Style({
 					image: new ol.style.Circle({
-						radius: this.markerradius,
-						snapToPixel: false,
-						fill: new ol.style.Fill({ color: 'blue' }),
-						stroke: new ol.style.Stroke({
-							color: 'white', width: 2
-						})
-					})
+							radius: this.markerradius,
+							snapToPixel: false,
+							fill: new ol.style.Fill({ color: 'blue' }),
+							stroke: new ol.style.Stroke({
+								color: 'white', width: 2
+							})
+						}),
+					text: this.getTextStyle()
 				});
 			}
 			this.feature.setStyle(this.style);
 			this.vectorSource = new ol.source.Vector({
-			features: [this.feature]
+				features: [this.feature]
 			});
 			this.vectorLayer = new ol.layer.Vector({
-			source: this.vectorSource
+				source: this.vectorSource
 			});
 			// tell papa to create me
 			this.$nextTick(t => this.$parent.$emit("addmarker", this));
@@ -90,6 +103,20 @@ const ol = require("openlayers");
 		beforeDestroy() {
 			// ask for destruction
 			this.$nextTick(t => this.$parent.$emit("removemarker", this));
+		},
+		methods: {
+			getTextStyle: function() {
+				return new ol.style.Text({
+						font: '16px Calibri,sans-serif',
+						fill: new ol.style.Fill({ color: '#000' }),
+						stroke: new ol.style.Stroke({
+							color: '#fff', width: 2
+						}),
+						text: this.label,
+						offsetX: this.labelx,
+						offsetY: this.labely
+					});
+			}
 		}
 	};
 </script>
