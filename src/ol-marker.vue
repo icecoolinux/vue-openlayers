@@ -44,6 +44,7 @@ const ol = require("openlayers");
 					anchor: this.anchor,
 					scale: this.scale
 				}));
+				this.feature.setStyle(this.style);
 				this.$emit("newmarker");
 				// console.log()
 				// this.style.image.src = val;
