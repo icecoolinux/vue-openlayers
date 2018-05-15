@@ -8,10 +8,10 @@
     "dev": "make dev",
     "release": "make release"
   },
-  "version": "0.6.0",
+  "version": "0.7.0",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sombriks/vue-openlayers.git"
+    "url": "git+https://github.com/icecoolinux/vue-openlayers.git"
   },
   "keywords": [
     "vue",
