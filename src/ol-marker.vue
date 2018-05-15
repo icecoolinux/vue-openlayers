@@ -13,6 +13,10 @@ const ol = require("openlayers");
 				type: Array,
 				default: _ => [-38.5431, -3.71722]
 			},
+			accuracy: {
+				type: Number,
+				default: 1
+			},
 			markerradius: {
 				type: [Number, String],
 				default: 12
@@ -34,6 +38,7 @@ const ol = require("openlayers");
 		data() {
 			return {
 				feature: null,
+				featureAccuracy: null,
 				style: null,
 				vectorSource: null,
 				vectorLayer: null
@@ -41,8 +46,10 @@ const ol = require("openlayers");
 		},
 		watch: {
 			coords(val) {
-				this.feature.setGeometry(new ol.geom.Point(ol.proj.fromLonLat(val)));
-				this.$emit("newcoords", val);
+				this.update(val, this.accuracy);
+			},
+			accuracy(val) {
+				this.update(this.coords, val);
 			},
 			src(val) {
 				this.style.setImage(new ol.style.Icon({
@@ -67,6 +74,10 @@ const ol = require("openlayers");
 				geometry: new ol.geom.Point(ol.proj.fromLonLat(this.coords))
 			});
 			this.feature.vueComponent = this;
+			this.featureAccuracy = new ol.Feature({
+				geometry: new ol.geom.Circle(ol.proj.fromLonLat(this.coords), this.accuracy)
+			});
+			this.featureAccuracy.vueComponent = this;
 			if (this.src) {
 				this.style = new ol.style.Style({
 					image: new ol.style.Icon({
@@ -92,7 +103,7 @@ const ol = require("openlayers");
 			}
 			this.feature.setStyle(this.style);
 			this.vectorSource = new ol.source.Vector({
-				features: [this.feature]
+				features: [this.feature, this.featureAccuracy]
 			});
 			this.vectorLayer = new ol.layer.Vector({
 				source: this.vectorSource
@@ -116,6 +127,11 @@ const ol = require("openlayers");
 						offsetX: this.labelx,
 						offsetY: this.labely
 					});
+			},
+			update: function(position, radius) {
+				this.featureAccuracy.setGeometry(new ol.geom.Circle(ol.proj.fromLonLat(position), radius));
+				this.feature.setGeometry(new ol.geom.Point(ol.proj.fromLonLat(position)));
+				this.$emit("newcoords", position);
 			}
 		}
 	};
