@@ -8,7 +8,7 @@
     "dev": "make dev",
     "release": "make release"
   },
-  "version": "0.7.0",
+  "version": "0.8.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/icecoolinux/vue-openlayers.git"
@@ -22,9 +22,9 @@
   "author": "Leonardo Silveira <sombriks@gmail.com>",
   "license": "BSD-2-Clause",
   "bugs": {
-    "url": "https://github.com/sombriks/vue-openlayers/issues"
+    "url": "https://github.com/icecoolinux/vue-openlayers/issues"
   },
-  "homepage": "https://github.com/sombriks/vue-openlayers#readme",
+  "homepage": "https://github.com/icecoolinux/vue-openlayers",
   "dependencies": {
     "openlayers": "^4.0.1",
     "vue": "^2.1.10"
