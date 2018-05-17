@@ -36,6 +36,7 @@ Vue.use(VueOpenLayers);
 **zoom**: Set the zomm (1 to 19)  
 **center**: Set the coordinates center array in latitude and longitude.  
 
+      
 ## ol-marker
 
 ### Attributes
@@ -43,4 +44,9 @@ Vue.use(VueOpenLayers);
 **src**: The url icon image.  
 **anchor**: An array with the position of the marker center, [0.5, 1] is default (center bottom).  
 **scale**: Size of the marker image.  
+**label**: Set text under the marker.
+**labely**: Set the distance of label and marker in pixels.
+**accuracy**: Display a circle around the marker with this radius in meters.
+**accuracyFillColor**: Accuracy circle fill color.
+**accuracyStrokeColor**: Accuracy circle stroke color.
 
