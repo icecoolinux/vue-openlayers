@@ -74,9 +74,9 @@ module.exports = {
     if (this.nodrag)
       this.enabledisabledragzoom();
 
-    this.$on("addmarker", m => this.olmap.addLayer(m.vectorLayer));
+    this.$on("addmarker", function(m){ this.olmap.addLayer(m.vectorLayerAccuracy); this.olmap.addLayer(m.vectorLayer); });
 
-    this.$on("removemarker", m => this.olmap.removeLayer(m.vectorLayer));
+    this.$on("removemarker", function(m){ this.olmap.removeLayer(m.vectorLayerAccuracy); this.olmap.removeLayer(m.vectorLayer); });
 
     this.$on("addballoon", b => this.olmap.addLayer(b.vectorLayer));
 
