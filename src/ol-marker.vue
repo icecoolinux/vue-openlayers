@@ -48,9 +48,11 @@ const ol = require("openlayers");
 				feature: null,
 				featureAccuracy: null,
 				style: null,
-				styleAccuracy: null,
 				vectorSource: null,
-				vectorLayer: null
+				vectorLayer: null,
+				styleAccuracy: null,
+				vectorSourceAccuracy: null,
+				vectorLayerAccuracy: null
 			};
 		},
 		watch: {
@@ -92,6 +94,8 @@ const ol = require("openlayers");
 		},
 		mounted() {
 			// http://openlayers.org/en/latest/examples/icon-color.html?q=feature
+			
+			// Marker
 			this.feature = new ol.Feature({
 				geometry: new ol.geom.Point(ol.proj.fromLonLat(this.coords))
 			});
@@ -121,6 +125,16 @@ const ol = require("openlayers");
 			}
 			this.feature.setStyle(this.style);
 			
+			this.vectorSource = new ol.source.Vector({
+				features: [this.feature]
+			});
+			this.vectorLayer = new ol.layer.Vector({
+				source: this.vectorSource
+			});
+			this.vectorLayer.setZIndex(101);
+			
+			
+			// Accuracy
 			this.featureAccuracy = new ol.Feature({
 				geometry: new ol.geom.Circle(ol.proj.fromLonLat(this.coords), this.accuracy)
 			});
@@ -132,16 +146,19 @@ const ol = require("openlayers");
 				}),
 				fill: new ol.style.Fill({
 					color: this.accuracyFillColor
-				})
+				}),
+				zIndex: 50
 			});
 			this.featureAccuracy.setStyle(this.styleAccuracy);
 			
-			this.vectorSource = new ol.source.Vector({
-				features: [this.feature, this.featureAccuracy]
+			this.vectorSourceAccuracy = new ol.source.Vector({
+				features: [this.featureAccuracy]
 			});
-			this.vectorLayer = new ol.layer.Vector({
-				source: this.vectorSource
+			this.vectorLayerAccuracy = new ol.layer.Vector({
+				source: this.vectorSourceAccuracy
 			});
+			this.vectorLayerAccuracy.setZIndex(100);
+			
 			// tell papa to create me
 			this.$nextTick(t => this.$parent.$emit("addmarker", this));
 		},
