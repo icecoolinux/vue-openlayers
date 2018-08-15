@@ -5,8 +5,14 @@
   </div>
 </template>
 <script>
-const ol = require("openlayers");
-	module.exports = {
+import {Feature} from 'ol';
+import {Point, Circle} from 'ol/geom';
+import {fromLonLat} from 'ol/proj.js';
+import {Icon, Fill, Stroke, Style, Circle as CircleStyle, Text} from 'ol/style';
+import {Vector} from 'ol/source';
+import {Vector as VectorLayer} from 'ol/layer';
+
+export default {
 		name: "OLMarker",
 		props: {
 			coords: {
@@ -63,7 +69,7 @@ const ol = require("openlayers");
 				this.update(this.coords, val);
 			},
 			src(val) {
-				this.style.setImage(new ol.style.Icon({
+				this.style.setImage(new Icon({
 					src: this.src,
 					anchor: this.anchor,
 					scale: this.scale
@@ -79,13 +85,13 @@ const ol = require("openlayers");
 				this.$emit("newmarker");
 			},
 			accuracyFillColor(val) {
-				this.styleAccuracy.setFill(new ol.style.Fill({
+				this.styleAccuracy.setFill(new Fill({
 					color: val
 				}));
 				this.featureAccuracy.setStyle(this.styleAccuracy);
 			},
 			accuracyStrokeColor(val) {
-				this.styleAccuracy.setStroke(new ol.style.Stroke({
+				this.styleAccuracy.setStroke(new Stroke({
 					color: val,
 					width: 1
 				}));
@@ -96,13 +102,13 @@ const ol = require("openlayers");
 			// http://openlayers.org/en/latest/examples/icon-color.html?q=feature
 			
 			// Marker
-			this.feature = new ol.Feature({
-				geometry: new ol.geom.Point(ol.proj.fromLonLat(this.coords))
+			this.feature = new Feature({
+				geometry: new Point(fromLonLat(this.coords))
 			});
 			this.feature.vueComponent = this;
 			if (this.src) {
-				this.style = new ol.style.Style({
-					image: new ol.style.Icon({
+				this.style = new Style({
+					image: new Icon({
 							src: this.src,
 							anchor: this.anchor,
 							scale: this.scale
@@ -111,12 +117,12 @@ const ol = require("openlayers");
 				});
 			}
 			else {
-				this.style = new ol.style.Style({
-					image: new ol.style.Circle({
+				this.style = new Style({
+					image: new CircleStyle({
 							radius: this.markerradius,
 							snapToPixel: false,
-							fill: new ol.style.Fill({ color: 'blue' }),
-							stroke: new ol.style.Stroke({
+							fill: new Fill({ color: 'blue' }),
+							stroke: new Stroke({
 								color: 'white', width: 2
 							})
 						}),
@@ -125,36 +131,36 @@ const ol = require("openlayers");
 			}
 			this.feature.setStyle(this.style);
 			
-			this.vectorSource = new ol.source.Vector({
+			this.vectorSource = new Vector({
 				features: [this.feature]
 			});
-			this.vectorLayer = new ol.layer.Vector({
+			this.vectorLayer = new VectorLayer({
 				source: this.vectorSource
 			});
 			this.vectorLayer.setZIndex(101);
 			
 			
 			// Accuracy
-			this.featureAccuracy = new ol.Feature({
-				geometry: new ol.geom.Circle(ol.proj.fromLonLat(this.coords), this.accuracy)
+			this.featureAccuracy = new Feature({
+				geometry: new Circle(fromLonLat(this.coords), this.accuracy)
 			});
 			this.featureAccuracy.vueComponent = this;
-			this.styleAccuracy = new ol.style.Style({
-				stroke: new ol.style.Stroke({
+			this.styleAccuracy = new Style({
+				stroke: new Stroke({
 					color: this.accuracyStrokeColor,
 					width: 1
 				}),
-				fill: new ol.style.Fill({
+				fill: new Fill({
 					color: this.accuracyFillColor
 				}),
 				zIndex: 50
 			});
 			this.featureAccuracy.setStyle(this.styleAccuracy);
 			
-			this.vectorSourceAccuracy = new ol.source.Vector({
+			this.vectorSourceAccuracy = new Vector({
 				features: [this.featureAccuracy]
 			});
-			this.vectorLayerAccuracy = new ol.layer.Vector({
+			this.vectorLayerAccuracy = new VectorLayer({
 				source: this.vectorSourceAccuracy
 			});
 			this.vectorLayerAccuracy.setZIndex(100);
@@ -168,10 +174,10 @@ const ol = require("openlayers");
 		},
 		methods: {
 			getTextStyle: function() {
-				return new ol.style.Text({
+				return new Text({
 						font: '16px Calibri,sans-serif',
-						fill: new ol.style.Fill({ color: '#000' }),
-						stroke: new ol.style.Stroke({
+						fill: new Fill({ color: '#000' }),
+						stroke: new Stroke({
 							color: '#fff', width: 2
 						}),
 						text: this.label,
@@ -180,8 +186,8 @@ const ol = require("openlayers");
 					});
 			},
 			update: function(position, radius) {
-				this.featureAccuracy.setGeometry(new ol.geom.Circle(ol.proj.fromLonLat(position), radius));
-				this.feature.setGeometry(new ol.geom.Point(ol.proj.fromLonLat(position)));
+				this.featureAccuracy.setGeometry(new Circle(fromLonLat(position), radius));
+				this.feature.setGeometry(new Point(fromLonLat(position)));
 				this.$emit("newcoords", position);
 			}
 		}

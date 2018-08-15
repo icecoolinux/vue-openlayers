@@ -4,11 +4,11 @@
  * and open the template in the editor.
  */
 
-const olMap = require("./ol-map.vue");
-const olMarker = require("./ol-marker.vue");
-const olBalloon = require("./ol-balloon.vue");
+import olMap from "./ol-map";
+import olMarker from "./ol-marker";
+import olBalloon from "./ol-balloon";
 
-module.exports = {
+export default {
   install: function (Vue, options) {
     // wiring project components
     Vue.component("ol-map", olMap);

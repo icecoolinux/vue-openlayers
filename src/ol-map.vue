@@ -6,8 +6,14 @@
 </template>
 
 <script>
-const ol = require("openlayers");
-module.exports = {
+
+import {Map} from 'ol';
+import {Tile} from 'ol/layer';
+import {OSM} from 'ol/source';
+import {View} from 'ol';
+import {fromLonLat, toLonLat} from 'ol/proj';
+
+export default {
   name: "OLMap",
   props: {
     autoCenter: Boolean,
@@ -19,7 +25,11 @@ module.exports = {
       type: [Number, String],
       default: 13
     },
-    nodrag: Boolean
+    nodrag: Boolean,
+	isVisible: {
+		type: Boolean,
+		default: true
+	}
   },
   data() {
     return {
@@ -28,16 +38,16 @@ module.exports = {
   },
   mounted() {
     this.$el.style.overflow = "hidden";
-    this.olmap = new ol.Map({
+    this.olmap = new Map({
       target: this.$el,
       loadTilesWhileAnimating: true,
       layers: [
-        new ol.layer.Tile({
-          source: new ol.source.OSM()
+        new Tile({
+          source: new OSM()
         })
       ],
-      view: new ol.View({
-        center: ol.proj.fromLonLat(this.center),
+      view: new View({
+        center: fromLonLat(this.center),
         zoom: this.zoom
       })
     });
@@ -47,7 +57,7 @@ module.exports = {
       // floating openlayer event to inside the vue's ViewModel
       const center = ev.map.getView().getCenter();
       const zoom = ev.map.getView().getZoom();
-      const lonlat = ol.proj.toLonLat(center);
+      const lonlat = toLonLat(center);
       this.$emit("moveend", ev, lonlat, zoom);
     });
 
@@ -55,7 +65,7 @@ module.exports = {
       const feature = this.olmap.forEachFeatureAtPixel(ev.pixel, feature => feature);
       const center = ev.map.getView().getCenter();
       const zoom = ev.map.getView().getZoom();
-      const lonlat = ol.proj.toLonLat(center);
+      const lonlat = toLonLat(center);
       this.$emit("pointerdrag", ev, lonlat, zoom, feature);
     });
 
@@ -84,7 +94,7 @@ module.exports = {
   },
   watch: {
     center(val) {
-      this.olmap.getView().setCenter(ol.proj.fromLonLat(val));
+      this.olmap.getView().setCenter(fromLonLat(val));
     },
     autoCenter(val) {
       if (val)
@@ -95,7 +105,11 @@ module.exports = {
     },
     nodrag(val) {
       this.enabledisabledragzoom();
-    }
+    },
+	isVisible(val) {
+		if(val)
+			this.olmap.updateSize();
+	}
   },
   methods: {
     autocenter() {
@@ -113,7 +127,7 @@ module.exports = {
     setcenter(latlng) {
       this.center[0] = latlng[0];
       this.center[1] = latlng[1];
-      this.olmap.getView().setCenter(ol.proj.fromLonLat(this.center));
+      this.olmap.getView().setCenter(fromLonLat(this.center));
     },
     enabledisabledragzoom() {
       this.olmap.getInteractions().forEach(e => {

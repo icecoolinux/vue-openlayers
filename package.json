@@ -8,7 +8,7 @@
     "dev": "make dev",
     "release": "make release"
   },
-  "version": "0.9.0",
+  "version": "0.10.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/icecoolinux/vue-openlayers.git"
@@ -16,6 +16,7 @@
   "keywords": [
     "vue",
     "openlayers",
+    "ol",
     "map",
     "component"
   ],
@@ -26,7 +27,7 @@
   },
   "homepage": "https://github.com/icecoolinux/vue-openlayers",
   "dependencies": {
-    "openlayers": "^4.0.1",
+    "ol": "^5.1.3",
     "vue": "^2.1.10"
   },
   "devDependencies": {

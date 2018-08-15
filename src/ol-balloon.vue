@@ -4,8 +4,14 @@
   </div>
 </template>
 <script>
-const ol = require("openlayers");
-module.exports = {
+
+import {Feature} from 'ol';
+import {Point} from 'ol/geom';
+import {fromLonLat} from 'ol/proj';
+import {Vector} from 'ol/source';
+import {Vector as VectorLayer} from 'ol/layer';
+
+export default {
   name: "OLBalloon",
   props: {
     coords: {
@@ -25,7 +31,7 @@ module.exports = {
   },
   watch: {
     coords(val) {
-      this.feature.setGeometry(new ol.geom.Point(ol.proj.fromLonLat(val)));
+      this.feature.setGeometry(new Point(fromLonLat(val)));
       this.updatepos();
     }
   },
@@ -34,13 +40,13 @@ module.exports = {
     // this.$el.style.display="none";
     this.$el.style.position = "absolute";
     this.$el.style.zIndex = "3000";
-    this.feature = new ol.Feature({
-      geometry: new ol.geom.Point(ol.proj.fromLonLat(this.coords))
+    this.feature = new Feature({
+      geometry: new Point(fromLonLat(this.coords))
     });
-    this.vectorSource = new ol.source.Vector({
+    this.vectorSource = new Vector({
       features: [this.feature]
     });
-    this.vectorLayer = new ol.layer.Vector({
+    this.vectorLayer = new VectorLayer({
       source: this.vectorSource
     });
 
