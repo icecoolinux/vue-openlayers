@@ -108,7 +108,10 @@ export default {
     },
 	isVisible(val) {
 		if(val)
-			this.olmap.updateSize();
+		{
+			const vm = this;
+			setTimeout(function(){ vm.olmap.updateSize(); }, 100);
+		}
 	}
   },
   methods: {
