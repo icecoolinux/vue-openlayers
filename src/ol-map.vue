@@ -110,7 +110,31 @@ export default {
 		if(val)
 		{
 			const vm = this;
-			setTimeout(function(){ vm.olmap.updateSize(); }, 300);
+			
+			setTimeout(updateSize, 0);
+			
+			// Realiza un updateSize si es necesario.
+			function updateSize()
+			{
+				var mapDom = document.getElementById('idMapa');
+				
+				// Obtengo los divs.
+				var divs = mapDom.getElementsByTagName("DIV");
+				
+				// Para cada div.
+				for(var i=0; i<divs.length; i++)
+				{
+					// Obtengo canvas.
+					var canvas = divs[i].getElementsByTagName("CANVAS");
+
+					// Si es display none hago updateSize.
+					if(canvas.length > 0 && canvas[0].style.display == "none")
+					{
+						vm.olmap.updateSize();
+						setTimeout(updateSize, 150);
+					}
+				}
+			}
 		}
 	}
   },

@@ -8,7 +8,7 @@
     "dev": "make dev",
     "release": "make release"
   },
-  "version": "0.10.2",
+  "version": "0.10.3",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/icecoolinux/vue-openlayers.git"
