@@ -110,7 +110,7 @@ export default {
 		if(val)
 		{
 			const vm = this;
-			setTimeout(function(){ vm.olmap.updateSize(); }, 100);
+			setTimeout(function(){ vm.olmap.updateSize(); }, 300);
 		}
 	}
   },
