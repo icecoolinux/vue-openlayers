@@ -35,6 +35,10 @@ export default {
 			},
 			labelx: Number,
 			labely: Number,
+			zIndex: {
+				type: Number,
+				default: 0
+			},
 			anchor: {
 				type: Array,
 				default: _ => [0.5, 1]
@@ -137,7 +141,7 @@ export default {
 			this.vectorLayer = new VectorLayer({
 				source: this.vectorSource
 			});
-			this.vectorLayer.setZIndex(101);
+			this.vectorLayer.setZIndex(101+this.zIndex);
 			
 			
 			// Accuracy

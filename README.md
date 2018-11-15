@@ -45,7 +45,9 @@ Vue.use(VueOpenLayers);
 **anchor**: An array with the position of the marker center, [0.5, 1] is default (center bottom).  
 **scale**: Size of the marker image.  
 **label**: Set text under the marker.  
+**labelx**: Set the distance of label and marker in pixels.  
 **labely**: Set the distance of label and marker in pixels.  
+**zIndex**: Set the marker depth.  
 **accuracy**: Display a circle around the marker with this radius in meters.  
 **accuracyFillColor**: Accuracy circle fill color.  
 **accuracyStrokeColor**: Accuracy circle stroke color.  
