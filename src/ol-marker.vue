@@ -170,11 +170,11 @@ export default {
 			this.vectorLayerAccuracy.setZIndex(100);
 			
 			// tell papa to create me
-			this.$nextTick(t => this.$parent.$emit("addmarker", this));
+			this.$nextTick(t => this.getParent().$emit("addmarker", this));
 		},
 		beforeDestroy() {
 			// ask for destruction
-			this.$nextTick(t => this.$parent.$emit("removemarker", this));
+			this.$nextTick(t => this.getParent().$emit("removemarker", this));
 		},
 		methods: {
 			getTextStyle: function() {
@@ -193,6 +193,13 @@ export default {
 				this.featureAccuracy.setGeometry(new Circle(fromLonLat(position), radius));
 				this.feature.setGeometry(new Point(fromLonLat(position)));
 				this.$emit("newcoords", position);
+			},
+			getParent: function()
+			{
+				var par = this;
+				while(par.$parent != null && !par.hasOwnProperty("olmap"))
+					par = par.$parent;
+				return par;
 			}
 		}
 	};
