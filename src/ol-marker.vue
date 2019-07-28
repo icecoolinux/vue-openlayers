@@ -51,6 +51,10 @@ export default {
 			accuracyStrokeColor: {
 				type: String,
 				default: "rgba(0, 0, 255, 0.7)"
+			},
+			wrap: {
+				type: Boolean,
+				default: true
 			}
 		},
 		data() {
@@ -136,7 +140,8 @@ export default {
 			this.feature.setStyle(this.style);
 			
 			this.vectorSource = new Vector({
-				features: [this.feature]
+				features: [this.feature],
+				wrapX: this.wrap
 			});
 			this.vectorLayer = new VectorLayer({
 				source: this.vectorSource
@@ -162,7 +167,8 @@ export default {
 			this.featureAccuracy.setStyle(this.styleAccuracy);
 			
 			this.vectorSourceAccuracy = new Vector({
-				features: [this.featureAccuracy]
+				features: [this.featureAccuracy],
+				wrapX: this.wrap
 			});
 			this.vectorLayerAccuracy = new VectorLayer({
 				source: this.vectorSourceAccuracy

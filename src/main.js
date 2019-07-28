@@ -7,6 +7,7 @@
 import olMap from "./ol-map";
 import olMarker from "./ol-marker";
 import olBalloon from "./ol-balloon";
+import olOverlay from "./ol-overlay";
 
 export default {
   install: function (Vue, options) {
@@ -14,5 +15,6 @@ export default {
     Vue.component("ol-map", olMap);
     Vue.component("ol-marker", olMarker);
     Vue.component("ol-balloon", olBalloon);
+	Vue.component("ol-overlay", olOverlay);
   }
 };
